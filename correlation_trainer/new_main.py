@@ -1,5 +1,6 @@
 import os
-BASE_PATH = os.environ['PROJ_BPATH'] + "/" + 'nas_embedding_suite/embedding_datasets/'
+# BASE_PATH = os.environ['PROJ_BPATH'] + "/" + 'nas_embedding_suite/embedding_datasets/'
+BASE_PATH = os.path.dirname(os.path.dirname(__file__))+"/nas_embedding_suite/embedding_datasets/"
 from scipy.stats import spearmanr, kendalltau
 import torch
 from torch.utils.data import DataLoader
@@ -14,7 +15,9 @@ from pprint import pprint
 import datetime
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
-sys.path.append(os.environ['PROJ_BPATH'] + "/" + 'nas_embedding_suite')
+# sys.path.append(os.environ['PROJ_BPATH'] + "/" + 'nas_embedding_suite')
+
+# sys.path.append('/home/xuke/Desktop/flan_nas/nas_embedding_suite/')
 
 # python -i new_main.py --space nb101 --representation adj_gin_zcp --test_tagates --loss_type pwl --sample_sizes 72 --batch_size 8
 # python -i new_main.py --space nb201 --representation adj_gin_zcp --test_tagates --loss_type pwl --sample_sizes 40 --batch_size 8
@@ -51,9 +54,26 @@ parser.add_argument('--seed', type=int, default=None)
 parser.add_argument('--id', type=int, default=0)
 ####################################################################################################################################
 args = parser.parse_args()
+
+
+args.seed = 42
+args.name_desc = 'table1_s'
+args.gnn_type = 'ensemble'
+args.sample_sizes = [72, 364, 729]
+args.batch_size = 8
+args.space = 'nb101'
+# args.representation = 'adj_gin'
+args.representation = 'adj_gin_a2vcatezcp'
+args.test_size = 7290
+args.num_trials = 5
+args.device = 'cpu'
+
+
 device = args.device
 sample_tests = {}
 sample_tests[args.space] = args.sample_sizes
+
+
 
 start_prg_time = time.time()
 
